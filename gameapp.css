@@ -18,3 +18,52 @@
 .hidden {
     display: none;
 }
+
+.button {
+    background-color: #2F43C7;
+    color:black;
+    border: none;
+    color: white;
+    padding: 20px 50px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 75px;
+    position:absolute;
+    left: 520px;
+    top: 250px;
+    margin: 0px 0px;
+    cursor: pointer;
+}
+.button:hover {
+    background-color: gray;
+}
+.button1 {
+    background-color: #2F43C7;
+    color:black;
+    border: none;
+    color: white;
+    padding: 20px 50px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 50px;
+    position:absolute;
+    left: 490px;
+    top: 100px;
+    margin: 0px 0px;
+    cursor: pointer;
+}
+.button1:hover {
+    background-color: gray;
+}
+.container {
+    display: block;
+    width: 1000px;
+    height: 500px;
+    display: block;
+    margin: 0 auto;
+    margin-top: 50px;
+    background-image: url("bg.jpg");
+    background-size: cover;
+}
