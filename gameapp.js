@@ -1,35 +1,31 @@
 // constants
-
-
-
-
 var canvas = document.getElementById("canvas");
-ctx = canvas.getContext("2d");
+var ctx = canvas.getContext("2d");
 var birdImage = document.getElementById('bird');
 var crosshairImage = document.getElementById('crosshair');
 var bulletImage = document.getElementById('bullet');
 var myScore = 0;
 
-crosshairSpeed = 5;
-bulletSpeed = 6;
-crosshairWidth = 40;
-crosshairHeight = 25;
-birdSpeedX = -2;
-birdWidth = 40;
-birdHeight = 25;
-crosshairWidth = 40;
-crosshairHeight = 25;
-birdSpeedX = -2;
+var crosshairSpeed = 5;
+var bulletSpeed = 6;
+var crosshairWidth = 40;
+var crosshairHeight = 25;
+var birdSpeedX = -2;
+var birdWidth = 40;
+var birdHeight = 25;
+var crosshairWidth = 40;
+var crosshairHeight = 25;
+var birdSpeedX = -2;
 
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
-}
+};
 
 function GameObject(type, startX, startY, deltaX, deltaY, width, height) {
     this.img = birdImage;
     if (type === 'crosshair') {
         this.img = crosshairImage;
-    }   else if (type === 'bullet') {
+    } else if (type === 'bullet') {
         this.img = bulletImage;
     }
     this.gameOb = {
@@ -45,24 +41,22 @@ function GameObject(type, startX, startY, deltaX, deltaY, width, height) {
         var newY = this.gameOb.top + deltaY;
         this.gameOb.right = newX;
         this.gameOb.top = newY;
-    }
+    };
     this.hit = function(){
         var bagoX = this.gameOb.right;
         var bagoY = this.gameOb.top;
         this.gameOb.right = bagoX;
         this.gameOb.top = bagoY;
-    }
-
+    };
     this.addToCanvas = function() {
         ctx.drawImage(this.gameOb.img, this.gameOb.right, this.gameOb.top,
             this.gameOb.width, this.gameOb.height);
-    }
-}
+    };
+};
 
 var birds = [];
 var crosshair = null;
 var bullets = [];
-
 function addbird(number) {
     var startX = 0;
     var startY = getRandomInt(0, 500 - birdHeight);
@@ -74,29 +68,26 @@ function addbird(number) {
         startX += birdWidth + 10;
         birds.push(gameOb);
         gameOb.addToCanvas();
-    }
-}
-
-
-
+    };
+};
 
 function startAddingbird() {
     addbird(1);
     setTimeout(function() {
         startAddingbird();
     }, 700);
-}
+};
 
 function movebirds() {
     var toRemove = [];
-    for (var i=birds.length - 1; i >= 0 ; i--) {
+    for (var i = birds.length - 1; i >= 0 ; i--) {
         birds[i].move();
         if (birds[i].gameOb.left - birdWidth > 0) {
             birds.splice(i, 1);
         }
     }
 
-    for (var i=bullets.length - 1; i >= 0; i--) {
+    for (var i = bullets.length - 1; i >= 0; i--) {
         bullets[i].hit();
         var hasRemove = false;
         for (var j=birds.length - 1; j >= 0; j--) {
@@ -115,13 +106,13 @@ function movebirds() {
             }
         }
     }
-}
+};
 
 function repaint() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     movebirds();
     crosshair.addToCanvas();
-    for (var i=0; i < birds.length; i++) {
+    for (var i = 0; i < birds.length; i++) {
         birds[i].addToCanvas();
         // if (checkCollision(crosshair.gameOb, birds[i].gameOb)) {
         //     alert('GAMEOVER');
@@ -136,29 +127,27 @@ function repaint() {
         repaint();
         drawScore();
     }, 20);
-}
+};
 function GameOver(){
     alert('GAMEOVER');
     document.location.reload();
-}
+};
 
 function addcrosshair() {
-    crosshair = new GameObject(
-        'crosshair', 500, 250, 0, 0, crosshairWidth, crosshairHeight);
+    crosshair = new GameObject('crosshair', 500, 250, 0, 0, crosshairWidth, crosshairHeight);
     crosshair.addToCanvas();
-}
+};
 
 function addBullet(startX, startY) {
-    var bullet = new GameObject(
-        'bullet', startX, startY, bulletSpeed, 0, 10, 10);
+    var bullet = new GameObject('bullet', startX, startY, bulletSpeed, 0, 10, 10);
     bullets.push(bullet);
-}
+};
 
 function drawScore() {
-        ctx.font = "50px Arial";
-        ctx.fillStyle = "black";
-        ctx.fillText("Score: "+myScore, 400, 485);
-    }
+    ctx.font = "50px Arial";
+    ctx.fillStyle = "black";
+    ctx.fillText("Score: " + myScore, 400, 485);
+};
 
 function movecrosshair(direction) {
     if (direction === 115 && crosshair.gameOb.top - crosshairSpeed > 0) { // up
@@ -170,8 +159,7 @@ function movecrosshair(direction) {
     }   else if (direction === 100 && crosshair.gameOb.right - crosshairSpeed > 0) {
         crosshair.gameOb.right -= crosshairSpeed;
     }
-
-}
+};
 
  function checkHit(bullet1, bird1) {
      if (bullet1.right < bird1.right + bird1.width  && bullet1.right + bullet1.width  > bird1.right &&
@@ -179,26 +167,25 @@ function movecrosshair(direction) {
          return true;
      }
      return false;
- }
+ };
 
 function allowcrosshairMovement() {
     document.onkeypress = function(e) {
         if (e.keyCode === 32) {
             addBullet(crosshair.gameOb.right + (crosshairWidth/2) - 2 , crosshair.gameOb.top + (crosshairHeight / 2) - 5);
-
         }
         movecrosshair(e.keyCode);
     };
-}
+};
 
 function start() {
     startAddingbird();
     addcrosshair();
     repaint();
     allowcrosshairMovement();
-    setTimeout(function(){
-    GameOver();
+    setTimeout(function() {
+        GameOver();
     }, 30000);
-}
+};
 
 start();
